@@ -25,12 +25,15 @@ def download():
         }
     }
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
 
-    return jsonify({
-        "download_url": f"https://your-server-url/{output_path}"
-    })
+        return jsonify({
+            "download_url": f"https://your-render-url.onrender.com/{output_path}"
+        })
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
